@@ -1,0 +1,50 @@
+mutation CreateWaitingLists {
+  createWaitingLists(input: [
+    { date: "2025-04-13" },
+    { date: "2025-04-12" },
+    { date: "2025-04-11" },
+    { date: "2025-04-10" },
+  ]) {
+    id
+    date
+  }
+}
+
+mutation CreatePuppies {
+  createPuppies(
+    input: [
+      {
+        ownerName: "Alice",
+        puppyName: "Buddy",
+        serviceRequested: "Grooming",
+        arrivalTime: "2025-04-13T10:00:00",
+      },
+      {
+        ownerName: "Bob",
+        puppyName: "Charlie",
+        serviceRequested: "Training",
+        arrivalTime: "2025-04-13T11:00:00",
+      },
+      {
+        ownerName: "Carol",
+        puppyName: "Daisy",
+        serviceRequested: "Vaccination",
+        arrivalTime: "2025-04-13T12:00:00",
+      },
+      {
+        ownerName: "Dave",
+        puppyName: "Ella",
+        serviceRequested: "Grooming",
+        arrivalTime: "2025-04-13T13:00:00",
+      }
+    ]
+  ) {
+    id
+    ownerName
+    puppyName
+    serviceRequested
+    arrivalTime
+    serviced
+  }
+}
+
