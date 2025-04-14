@@ -19,5 +19,5 @@ export interface WaitingListEntry {
   position: number;
   createdAt: Date;
   waitingList: WaitingList;
-  puppy: Puppy;
+  puppy?: Puppy;
 }

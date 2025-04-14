@@ -1,5 +1,5 @@
 export const GET_ENTRIES_BY_WAITING_LIST_ID = (waitingListId: number) => `
-  query GetEntriesByWaitingList($waitingListId: Int!) {
+  query GetEntriesByWaitingList {
     findByWaitingListId(waitingListId: ${waitingListId}) {
       id
       position
@@ -25,6 +25,45 @@ export const CREATE_WAITING_LIST_MUTATION = (date: string) => `
     createWaitingList(input: {date: "${date}"}) {
       id
       date
+    }
+  }`;
+
+export const CREATE_WAITING_ENTRY = (
+  waitingListId: number,
+  position: number,
+  createdAt: string
+) => `
+mutation CreateEntries {
+  createWaitingListEntry(
+    input: {position: ${position}, createdAt: "${createdAt}"}
+    waitingListId: ${waitingListId}
+  ) {
+    id
+    position
+    createdAt
+  }
+}`;
+
+export const CREATE_PUPPY_MUTATION = ({
+  ownerName,
+  puppyName,
+  serviceRequested,
+  arrivalTime,
+  waitingListId,
+}: {
+  ownerName: string;
+  puppyName: string;
+  serviceRequested: string;
+  arrivalTime: string;
+  waitingListId: number;
+}) => `
+  mutation CreatePuppy {
+    createPuppy(input: {ownerName: "${ownerName}", puppyName: "${puppyName}", serviceRequested: "${serviceRequested}", arrivalTime: "${arrivalTime}"}, waitingListId: ${waitingListId}) {
+      id
+      ownerName
+      arrivalTime
+      puppyName
+      serviceRequested
     }
   }`;
 

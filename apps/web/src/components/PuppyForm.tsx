@@ -1,47 +1,46 @@
 // src/app/components/PuppyForm.tsx
 "use client";
 
-import { useState } from "react";
-// import { graphqlRequest } from '../lib/graphqlClient';
+import { useCallback, useTransition, useState } from "react";
+import { createWaitingListEntry } from "@/actions/graphql";
+import useStore from "@/store";
+import { cn } from "@/lib/utils";
 
-export default function PuppyForm({
-  waitingListId,
-}: {
-  waitingListId: string;
-}) {
+export default function PuppyForm() {
+  const [isPending, startTransition] = useTransition();
+  const waitingList = useStore((state) => state.waitingList);
+  const addWaitingListEntry = useStore((state) => state.addWaitingListEntry);
   const [formData, setFormData] = useState({
-    name: "",
-    breed: "",
+    puppyName: "",
     ownerName: "",
-    ownerPhone: "",
-    service: "bath",
-    notes: "",
+    serviceRequested: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // try {
-    //   await graphqlRequest(ADD_PUPPY_MUTATION, {
-    //     input: {
-    //       ...formData,
-    //       waitingListId,
-    //       arrivalTime: new Date().toISOString(),
-    //     },
-    //   });
-    //   // Reset form
-    //   setFormData({
-    //     name: '',
-    //     breed: '',
-    //     ownerName: '',
-    //     ownerPhone: '',
-    //     service: 'bath',
-    //     notes: '',
-    //   });
-    //   // You might want to add a callback to refresh the waiting list
-    // } catch (error) {
-    //   console.error('Error adding puppy:', error);
-    // }
-  };
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!waitingList) return;
+      startTransition(async () => {
+        const entries = waitingList.entries ?? [];
+        const waitingListEntry = await createWaitingListEntry({
+          waitingListId: waitingList.id,
+          position: entries.length + 1,
+          createdAt: new Date().toISOString(),
+          ownerName: formData.ownerName,
+          puppyName: formData.puppyName,
+          serviceRequested: formData.serviceRequested,
+          arrivalTime: new Date().toISOString(),
+        });
+        addWaitingListEntry(waitingListEntry);
+        setFormData({
+          puppyName: "",
+          ownerName: "",
+          serviceRequested: "",
+        });
+      });
+    },
+    [formData, waitingList, addWaitingListEntry, startTransition]
+  );
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
@@ -54,23 +53,9 @@ export default function PuppyForm({
             </label>
             <input
               type="text"
-              value={formData.name}
+              value={formData.puppyName}
               onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-            Puppy Name
-            </label>
-            <input
-              type="text"
-              value={formData.breed}
-              onChange={(e) =>
-                setFormData({ ...formData, breed: e.target.value })
+                setFormData({ ...formData, puppyName: e.target.value })
               }
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               required
@@ -90,54 +75,30 @@ export default function PuppyForm({
               required
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Owner Phone
-            </label>
-            <input
-              type="tel"
-              value={formData.ownerPhone}
-              onChange={(e) =>
-                setFormData({ ...formData, ownerPhone: e.target.value })
-              }
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              required
-            />
-          </div>
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Service
-          </label>
-          <select
-            value={formData.service}
-            onChange={(e) =>
-              setFormData({ ...formData, service: e.target.value })
-            }
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          >
-            <option value="bath">Bath</option>
-            <option value="grooming">Grooming</option>
-            <option value="nail-trim">Nail Trim</option>
-            <option value="full-service">Full Service</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Notes
+            Service Requested:
           </label>
           <textarea
-            value={formData.notes}
+            value={formData.serviceRequested}
             onChange={(e) =>
-              setFormData({ ...formData, notes: e.target.value })
+              setFormData({ ...formData, serviceRequested: e.target.value })
             }
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             rows={3}
           />
         </div>
         <button
+          disabled={isPending}
           type="submit"
-          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          onClick={handleSubmit}
+          className={cn(
+            "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
+            {
+              "opacity-50 cursor-not-allowed": isPending,
+            }
+          )}
         >
           Add to Waiting List
         </button>

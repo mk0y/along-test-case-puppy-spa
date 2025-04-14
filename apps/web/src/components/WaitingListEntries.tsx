@@ -7,20 +7,14 @@ import {
   WaitingList as WaitingListType,
 } from "@/types";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import useStore from "@/store";
+import { cn } from "@/lib/utils";
 
 const today = new Date().toISOString().split("T")[0] as string;
 
-export default function WaitingList({
-  waitingList,
-  waitingListEntries,
-}: {
-  waitingList: WaitingListType;
-  waitingListEntries: WaitingListEntry[];
-}) {
-  const [puppies, setPuppies] = useState<Puppy[]>(
-    // waitingListEntries[0]?.puppy ?? []
-    []
-  );
+export default function WaitingList() {
+  const waitingList = useStore((state) => state.waitingList);
+  const [puppies, setPuppies] = useState<Puppy[]>([]);
 
   const onDragEnd = async (result: any) => {
     if (!result.destination) return;
@@ -30,51 +24,27 @@ export default function WaitingList({
     if (reorderedItem) {
       items.splice(result.destination.index, 0, reorderedItem);
     }
-
     setPuppies(items);
-
-    // try {
-    //   await graphqlRequest(UPDATE_PUPPY_ORDER_MUTATION, {
-    //     waitingListId: waitingList.id,
-    //     puppyIds: items.map((p) => p.id),
-    //   });
-    // } catch (error) {
-    //   console.error("Error updating order:", error);
-    //   // Revert if error
-    //   setPuppies(waitingList.puppies);
-    // }
   };
 
-  const toggleServed = async (puppyId: number, served: boolean) => {
-    // try {
-    //   await graphqlRequest(MARK_PUPPY_SERVED_MUTATION, {
-    //     puppyId,
-    //     served,
-    //   });
-    //   setPuppies(puppies.map((p) => (p.id === puppyId ? { ...p, served } : p)));
-    // } catch (error) {
-    //   console.error("Error marking puppy as served:", error);
-    // }
-  };
+  const toggleServed = async (puppyId: number, served: boolean) => {};
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">
-        Waiting List for {today}
-      </h2>
+      <h2 className="text-xl font-semibold mb-4">Waiting List for {today}</h2>
 
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="puppies">
+        <Droppable droppableId="entries">
           {(provided) => (
             <ul
               {...provided.droppableProps}
               ref={provided.innerRef}
               className="space-y-2"
             >
-              {puppies.map((puppy, index) => (
+              {waitingList?.entries?.map((entry, index) => (
                 <Draggable
-                  key={puppy.id}
-                  draggableId={puppy.id.toString()}
+                  key={entry.id}
+                  draggableId={entry.id.toString()}
                   index={index}
                 >
                   {(provided) => (
@@ -82,24 +52,28 @@ export default function WaitingList({
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      className={`p-4 border rounded-lg flex justify-between items-center ${
-                        puppy.serviced ? "bg-gray-100" : "bg-white"
-                      }`}
+                      className={cn(
+                        "p-4 border rounded-lg flex justify-between items-center",
+                        entry.puppy?.serviced ? "bg-gray-100" : "bg-white"
+                      )}
                     >
                       <div>
                         <h3 className="font-medium">
-                          {puppy.puppyName} (
-                          {puppy.serviceRequested ? "Served" : "Not Served"})
+                          {entry.puppy?.puppyName} (
+                          {entry.puppy?.serviced ? "Served" : "Not Served"})
                         </h3>
                         <p className="text-sm text-gray-600">
-                          Owner: {puppy.ownerName}
+                          Owner: {entry.puppy?.ownerName}
                         </p>
                         <p className="text-sm">
-                          Service: {puppy.serviceRequested}
+                          Service: {entry.puppy?.serviceRequested}
                         </p>
                         <p className="text-xs text-gray-500">
                           Arrived:{" "}
-                          {new Date(puppy.arrivalTime).toLocaleTimeString()}
+                          {entry.puppy?.arrivalTime &&
+                            new Date(
+                              entry.puppy?.arrivalTime
+                            ).toLocaleTimeString()}
                         </p>
                         <p className="text-xs text-gray-500">
                           Notes: Notes go here...
@@ -109,9 +83,12 @@ export default function WaitingList({
                         <label className="inline-flex items-center">
                           <input
                             type="checkbox"
-                            checked={puppy.serviced}
+                            checked={entry.puppy?.serviced || false}
                             onChange={(e) =>
-                              toggleServed(puppy.id, e.target.checked)
+                              toggleServed(
+                                entry.puppy?.id || 0,
+                                e.target.checked
+                              )
                             }
                             className="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                           />

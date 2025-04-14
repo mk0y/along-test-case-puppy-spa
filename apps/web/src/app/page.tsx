@@ -1,14 +1,26 @@
+"use client";
+
 // src/app/page.tsx
-import { fetchTodaysWaitingList } from "@/actions/graphql";
 import DashboardLayout from "../components/layout/DashboardLayout";
 import DaySelector from "@/components/DaySelector";
 import Button from "@/components/ui/Button";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/lib/icons";
 import NoWaitLists from "@/components/NoWaitLists";
 import WaitListOps from "@/components/WaitListOps";
+import { useEffect } from "react";
+import { fetchTodaysWaitingList } from "@/actions/graphql";
+import useStore from "@/store";
 
-export default async function Home() {
-  const waitingList = await fetchTodaysWaitingList();
+export default function Home() {
+  const waitingList = useStore((state) => state.waitingList);
+  const setWaitingList = useStore((state) => state.setWaitingList);
+  useEffect(() => {
+    const fetchList = async () => {
+      const waitingList = await fetchTodaysWaitingList();
+      setWaitingList(waitingList);
+    };
+    fetchList();
+  }, []);
   return (
     <DashboardLayout>
       <div className="space-y-6">
