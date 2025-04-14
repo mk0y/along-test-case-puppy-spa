@@ -31,6 +31,7 @@
     "@nestjs/graphql": "^13.1.0",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/typeorm": "^11.0.0",
+    "@vercel/node": "^5.1.14",
     "graphql": "^16.10.0",
     "graphql-yoga": "^5.13.3",
     "pg": "^8.14.1",
