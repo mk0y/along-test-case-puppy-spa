@@ -3,14 +3,13 @@
 import type { Config } from "tailwindcss";
 import sharedConfig from "@repo/tailwind-config";
 
-const config: Pick<Config, "content" | "presets"> = {
-    darkMode: ["class"],
-    content: ["./app/**/*.tsx"],
+const config: Pick<Config, "content" | "presets" | "plugins" | "theme"> = {
+  content: ["./src/**/*.{js,ts,jsx,tsx}", "./app/**/*.tsx"],
   presets: [sharedConfig],
-    plugins: [require("tailwindcss-animate")],
-    theme: {
-    	extend: {
-    		borderRadius: {
+  plugins: [require("tailwindcss-animate")],
+  theme: {
+    extend: {
+      borderRadius: {
     			lg: 'var(--radius)',
     			md: 'calc(var(--radius) - 2px)',
     			sm: 'calc(var(--radius) - 4px)'

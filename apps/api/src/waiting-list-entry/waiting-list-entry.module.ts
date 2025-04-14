@@ -11,5 +11,4 @@ import { WaitingList } from '../waiting-list/entities/waiting-list.entity';
   providers: [WaitingListEntryService, WaitingListEntryResolver],
   exports: [WaitingListEntryService],
 })
-export class WaitingListEntryModule { }
-
+export class WaitingListEntryModule {}

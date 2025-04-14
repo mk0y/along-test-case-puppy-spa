@@ -9,5 +9,4 @@ import { WaitingListResolver } from './waiting-list.resolver';
   imports: [TypeOrmModule.forFeature([WaitingList, WaitingListEntry])],
   providers: [WaitingListResolver, WaitingListService],
 })
-export class WaitingListModule { }
-
+export class WaitingListModule {}

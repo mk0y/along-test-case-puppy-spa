@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { WaitingList } from './entities/waiting-list.entity';
@@ -13,7 +13,7 @@ export class WaitingListService {
 
     @InjectRepository(WaitingListEntry)
     private entriesRepo: Repository<WaitingListEntry>,
-  ) { }
+  ) {}
 
   async create(input: CreateWaitingListInput): Promise<WaitingList> {
     const { date } = input;
@@ -25,15 +25,29 @@ export class WaitingListService {
     return { ...waitingList };
   }
 
-  async createWaitingLists(waitingLists: CreateWaitingListInput[]): Promise<WaitingList[]> {
-    const waitingListsToCreate = waitingLists.map((waitingList) => this.waitingListRepo.create({
-      ...waitingList
-    }))
+  async createWaitingLists(
+    waitingLists: CreateWaitingListInput[],
+  ): Promise<WaitingList[]> {
+    const waitingListsToCreate = waitingLists.map((waitingList) =>
+      this.waitingListRepo.create({
+        ...waitingList,
+      }),
+    );
     return this.waitingListRepo.save(waitingListsToCreate);
   }
 
   findAll(): Promise<WaitingList[]> {
-    return this.waitingListRepo.find({ relations: ['puppies'] });
+    return this.waitingListRepo.find();
+  }
+
+  async findByDate(date: string): Promise<WaitingList> {
+    const waitingList = await this.waitingListRepo.findOne({
+      where: { date },
+    });
+    if (!waitingList) {
+      throw new NotFoundException('Waiting list not found');
+    }
+    return waitingList;
   }
 
   getEntries(): Promise<WaitingListEntry[]> {
@@ -43,4 +57,3 @@ export class WaitingListService {
     });
   }
 }
-

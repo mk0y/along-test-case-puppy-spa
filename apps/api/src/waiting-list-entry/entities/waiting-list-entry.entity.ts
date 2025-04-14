@@ -25,16 +25,10 @@ export class WaitingListEntry {
   createdAt: string;
 
   @Field(() => WaitingList)
-  @ManyToOne(() => WaitingList, (waitingList) => waitingList.entries, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(() => WaitingList, (waitingList) => waitingList.entries)
   waitingList: WaitingList;
 
-  @Field(() => Puppy)
-  @ManyToOne(() => Puppy, (puppy) => puppy.entries, {
-    onDelete: 'CASCADE',
-    nullable: true,
-  })
+  @Field(() => Puppy, { nullable: true })
+  @ManyToOne(() => Puppy, (puppy) => puppy.entries)
   puppy?: Puppy;
 }
-

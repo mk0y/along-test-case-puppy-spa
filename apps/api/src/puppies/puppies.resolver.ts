@@ -5,18 +5,22 @@ import { CreatePuppyInput } from './dto/create-puppy.input';
 
 @Resolver(() => Puppy)
 export class PuppiesResolver {
-  constructor(private readonly puppiesService: PuppiesService) { }
+  constructor(private readonly puppiesService: PuppiesService) {}
+
+  @Query(() => [Puppy])
+  puppies(): Promise<Puppy[]> {
+    return this.puppiesService.findAll();
+  }
 
   @Mutation(() => Puppy)
-  createPuppy(
-    @Args('input') input: CreatePuppyInput,
-  ): Promise<Puppy> {
+  createPuppy(@Args('input') input: CreatePuppyInput): Promise<Puppy> {
     return this.puppiesService.create(input);
   }
 
   @Mutation(() => [Puppy])
   createPuppies(
-    @Args('input', { type: () => [CreatePuppyInput] }) input: CreatePuppyInput[],
+    @Args('input', { type: () => [CreatePuppyInput] })
+    input: CreatePuppyInput[],
   ): Promise<Puppy[]> {
     return this.puppiesService.createPuppies(input);
   }
@@ -28,4 +32,3 @@ export class PuppiesResolver {
     return this.puppiesService.markAsServiced(id);
   }
 }
-

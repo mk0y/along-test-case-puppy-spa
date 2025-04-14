@@ -1,5 +1,5 @@
-import { YogaDriver, YogaDriverConfig } from '@graphql-yoga/nestjs'
-import { GraphQLModule } from '@nestjs/graphql'
+import { YogaDriver, YogaDriverConfig } from '@graphql-yoga/nestjs';
+import { GraphQLModule } from '@nestjs/graphql';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -36,5 +36,4 @@ import { WaitingListEntryModule } from './waiting-list-entry/waiting-list-entry.
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
-
+export class AppModule {}

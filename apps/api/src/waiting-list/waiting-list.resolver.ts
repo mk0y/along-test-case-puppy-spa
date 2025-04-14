@@ -5,7 +5,12 @@ import { CreateWaitingListInput } from './dto/create-waiting-list.input';
 
 @Resolver(() => WaitingList)
 export class WaitingListResolver {
-  constructor(private readonly waitingListService: WaitingListService) { }
+  constructor(private readonly waitingListService: WaitingListService) {}
+
+  @Query(() => [WaitingList])
+  waitingLists(): Promise<WaitingList[]> {
+    return this.waitingListService.findAll();
+  }
 
   @Mutation(() => WaitingList)
   createWaitingList(
@@ -16,7 +21,8 @@ export class WaitingListResolver {
 
   @Mutation(() => [WaitingList])
   createWaitingLists(
-    @Args('input', { type: () => [CreateWaitingListInput] }) input: CreateWaitingListInput[],
+    @Args('input', { type: () => [CreateWaitingListInput] })
+    input: CreateWaitingListInput[],
   ): Promise<WaitingList[]> {
     return this.waitingListService.createWaitingLists(input);
   }
@@ -25,5 +31,9 @@ export class WaitingListResolver {
   getWaitingLists(): Promise<WaitingList[]> {
     return this.waitingListService.findAll();
   }
-}
 
+  @Query(() => WaitingList)
+  getByDate(@Args('date') date: string): Promise<WaitingList> {
+    return this.waitingListService.findByDate(date);
+  }
+}

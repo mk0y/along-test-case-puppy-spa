@@ -48,3 +48,72 @@ mutation CreatePuppies {
   }
 }
 
+mutation CreateEntries {
+  createWaitingListEntry(
+    input: {position: 1, createdAt: "2025-04-13"}
+    waitingListId: 2
+  ) {
+    id
+    position
+    createdAt
+  }
+}
+
+query GetWaitingLists {
+  waitingLists {
+    id
+    date
+    createdAt
+  }
+}
+
+query GetPuppies {
+  puppies {
+    id
+    arrivalTime
+    ownerName
+    puppyName
+    serviceRequested
+    serviced
+  }
+}
+
+query GetEntries {
+  waitingListEntries {
+    id
+    position
+    puppy {
+      id
+      ownerName
+      arrivalTime
+      puppyName
+      serviceRequested
+      serviced
+    }
+    waitingList {
+      id
+      date
+      createdAt
+    }
+  }
+}
+
+query GetEntriesByWaitingList {
+  findByWaitingListId(waitingListId: 2) {
+    id
+    position
+    puppy {
+      id
+      ownerName
+      arrivalTime
+      puppyName
+      serviceRequested
+      serviced
+    }
+    waitingList {
+      id
+      date
+      createdAt
+    }
+  }
+}

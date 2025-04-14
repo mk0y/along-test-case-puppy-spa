@@ -1,5 +1,11 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  CreateDateColumn,
+} from 'typeorm';
 import { WaitingListEntry } from '../../waiting-list-entry/entities/waiting-list-entry.entity';
 
 @ObjectType()
@@ -20,4 +26,3 @@ export class WaitingList {
   @OneToMany(() => WaitingListEntry, (entry) => entry.waitingList)
   entries: WaitingListEntry[];
 }
-
