@@ -23,6 +23,7 @@ export class WaitingList {
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
+  @Field(() => [WaitingListEntry], { nullable: true })
   @OneToMany(() => WaitingListEntry, (entry) => entry.waitingList)
   entries: WaitingListEntry[];
 }

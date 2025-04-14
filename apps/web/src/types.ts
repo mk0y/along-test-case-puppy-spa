@@ -11,6 +11,7 @@ export interface WaitingList {
   id: number;
   date: string;
   createdAt: Date;
+  entries: WaitingListEntry[];
 }
 
 export interface WaitingListEntry {
@@ -18,5 +19,5 @@ export interface WaitingListEntry {
   position: number;
   createdAt: Date;
   waitingList: WaitingList;
-  puppies: Puppy[];
+  puppy: Puppy;
 }

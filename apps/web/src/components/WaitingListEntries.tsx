@@ -1,4 +1,3 @@
-// src/app/components/WaitingList.tsx
 "use client";
 
 import { useState } from "react";
@@ -19,7 +18,8 @@ export default function WaitingList({
   waitingListEntries: WaitingListEntry[];
 }) {
   const [puppies, setPuppies] = useState<Puppy[]>(
-    waitingListEntries[0]?.puppies ?? []
+    // waitingListEntries[0]?.puppy ?? []
+    []
   );
 
   const onDragEnd = async (result: any) => {

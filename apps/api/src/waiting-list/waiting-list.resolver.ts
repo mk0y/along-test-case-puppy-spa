@@ -27,6 +27,9 @@ export class WaitingListResolver {
     return this.waitingListService.createWaitingLists(input);
   }
 
+  // @Mutation(() => WaitingList)
+  // addEntry(
+
   @Query(() => [WaitingList])
   getWaitingLists(): Promise<WaitingList[]> {
     return this.waitingListService.findAll();

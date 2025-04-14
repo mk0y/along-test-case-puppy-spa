@@ -1,21 +1,14 @@
 // src/app/page.tsx
-import {
-  fetchEntriesByWaitingListId,
-  fetchWaitingListByDate,
-} from "@/actions/waitingList";
+import { fetchTodaysWaitingList } from "@/actions/graphql";
 import DashboardLayout from "../components/layout/DashboardLayout";
-import WaitingList from "@/components/WaitingList";
-import PuppyForm from "@/components/PuppyForm";
 import DaySelector from "@/components/DaySelector";
 import Button from "@/components/ui/Button";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/lib/icons";
-
-const today = new Date().toISOString().split("T")[0] as string;
+import NoWaitLists from "@/components/NoWaitLists";
+import WaitListOps from "@/components/WaitListOps";
 
 export default async function Home() {
-  // Date format: 2025-04-13
-  const waitingList = await fetchWaitingListByDate(today);
-  const entries = await fetchEntriesByWaitingListId(waitingList.id);
+  const waitingList = await fetchTodaysWaitingList();
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -39,28 +32,9 @@ export default async function Home() {
           </div>
         </div>
 
-        <DaySelector initialDate={waitingList?.date} />
-
-        {entries.length > 0 ? (
-          <>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-1">
-                <PuppyForm waitingListId={waitingList.id.toString()} />
-              </div>
-              <div className="lg:col-span-2">
-                <WaitingList
-                  waitingList={waitingList}
-                  waitingListEntries={entries}
-                />
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <p>No waiting list created for today yet.</p>
-            <p>Please select a date and create a new waiting list.</p>
-          </div>
-        )}
+        <DaySelector />
+        <WaitListOps todaysList={waitingList} />
+        <NoWaitLists />
       </div>
     </DashboardLayout>
   );

@@ -1,24 +1,29 @@
 // src/app/components/DaySelector.tsx
 "use client";
 
-import { useState } from "react";
-// import { graphqlRequest } from '../lib/graphqlClient';
+import { createWaitingList } from "@/actions/graphql";
+import { useCallback, useTransition, useState } from "react";
+import useStore from "@/store";
+import { cn } from "@/lib/utils";
 
-export default function DaySelector({ initialDate }: { initialDate?: string }) {
-  const [selectedDate, setSelectedDate] = useState(
-    initialDate || new Date().toISOString().split("T")[0]
-  );
+const currentDate = new Date().toISOString().split("T")[0];
 
-  const handleCreateNewDay = async () => {
-    // try {
-    //   const { createWaitingList } = await graphqlRequest(CREATE_WAITING_LIST_MUTATION, {
-    //     date: selectedDate,
-    //   });
-    //   onDateSelect(selectedDate);
-    // } catch (error) {
-    //   console.error('Error creating waiting list:', error);
-    // }
-  };
+export default function DaySelector() {
+  const [isPending, startTransition] = useTransition();
+  const [selectedDate, setSelectedDate] = useState(currentDate);
+  const addWaitingList = useStore((state) => state.addWaitingList);
+
+  const handleCreateNewDay = useCallback(async () => {
+    startTransition(async () => {
+      try {
+        const response = await createWaitingList({ date: selectedDate });
+        console.log("Created new waiting list:", response);
+        addWaitingList(response);
+      } catch (error) {
+        console.error("Error creating waiting list:", error);
+      }
+    });
+  }, [selectedDate, startTransition]);
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md mb-4">
@@ -35,10 +40,16 @@ export default function DaySelector({ initialDate }: { initialDate?: string }) {
           />
         </div>
         <button
+          disabled={isPending}
           onClick={handleCreateNewDay}
-          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className={cn(
+            "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
+            {
+              "opacity-50 cursor-not-allowed": isPending,
+            }
+          )}
         >
-          Create New Day
+          Create New List
         </button>
       </div>
     </div>

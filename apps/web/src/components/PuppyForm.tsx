@@ -64,7 +64,7 @@ export default function PuppyForm({
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Breed
+            Puppy Name
             </label>
             <input
               type="text"

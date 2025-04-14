@@ -50,7 +50,7 @@ export class WaitingListService {
     return waitingList;
   }
 
-  getEntries(): Promise<WaitingListEntry[]> {
+  async getEntries(): Promise<WaitingListEntry[]> {
     return this.entriesRepo.find({
       relations: ['waitingList'],
       order: { position: 'ASC' },
