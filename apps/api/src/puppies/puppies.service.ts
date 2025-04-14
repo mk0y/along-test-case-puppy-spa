@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Puppy } from './entities/puppy.entity';
 import { CreatePuppyInput } from './dto/create-puppy.input';
-import { WaitingListEntry } from 'src/waiting-list-entry/entities/waiting-list-entry.entity';
+import { WaitingListEntry } from '../waiting-list-entry/entities/waiting-list-entry.entity';
 
 @Injectable()
 export class PuppiesService {

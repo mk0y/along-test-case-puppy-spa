@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { WaitingListEntry } from './entities/waiting-list-entry.entity';
 import { CreateWaitingListEntryInput } from './dto/create-waiting-list-entry.input';
-import { WaitingList } from 'src/waiting-list/entities/waiting-list.entity';
-import { Puppy } from 'src/puppies/entities/puppy.entity';
+import { WaitingList } from '../waiting-list/entities/waiting-list.entity';
+import { Puppy } from '../puppies/entities/puppy.entity';
 
 @Injectable()
 export class WaitingListEntryService {
