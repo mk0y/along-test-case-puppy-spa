@@ -55,6 +55,8 @@ Some obesrvations: for the MVP Nest.js might be overkill. But, everything should
 
 More complex setup and possible migration to e.g. AWS for custom load balancing and microservice orchestration, should be evaluated much later. MVP should first be built using serverless prodviders like Vercel, Koyeb, etc.
 
+Managed database like Neon, Supabase, etc. is also good enough for first year or two of the product. It's battle tested and good for production.
+
 Example of the app:
 
 <img width="1670" alt="image" src="https://github.com/user-attachments/assets/f6a80c6a-5566-405e-96b5-1d93a2b5ddda" />
