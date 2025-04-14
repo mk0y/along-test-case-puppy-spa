@@ -13,8 +13,11 @@ export class PuppiesResolver {
   }
 
   @Mutation(() => Puppy)
-  createPuppy(@Args('input') input: CreatePuppyInput): Promise<Puppy> {
-    return this.puppiesService.create(input);
+  createPuppy(
+    @Args('input') input: CreatePuppyInput,
+    @Args('waitingListId', { type: () => Int }) waitingListId: number,
+  ): Promise<Puppy> {
+    return this.puppiesService.create(input, waitingListId);
   }
 
   @Mutation(() => [Puppy])

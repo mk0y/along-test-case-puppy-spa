@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { WaitingList } from './entities/waiting-list.entity';
@@ -18,10 +22,14 @@ export class WaitingListService {
   async create(input: CreateWaitingListInput): Promise<WaitingList> {
     const { date } = input;
     const createdAt = new Date();
-
+    const existingList = await this.waitingListRepo.findOne({
+      where: { date },
+    });
+    if (existingList) {
+      throw new ConflictException('Waiting list already exists');
+    }
     const waitingList = this.waitingListRepo.create({ date, createdAt });
     await this.waitingListRepo.save(waitingList);
-
     return { ...waitingList };
   }
 

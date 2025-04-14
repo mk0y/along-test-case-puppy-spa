@@ -3,19 +3,32 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Puppy } from './entities/puppy.entity';
 import { CreatePuppyInput } from './dto/create-puppy.input';
+import { WaitingListEntry } from 'src/waiting-list-entry/entities/waiting-list-entry.entity';
 
 @Injectable()
 export class PuppiesService {
   constructor(
     @InjectRepository(Puppy)
     private puppyRepo: Repository<Puppy>,
+    @InjectRepository(WaitingListEntry)
+    private waitingListEntryRepo: Repository<WaitingListEntry>,
   ) {}
 
-  async create(createPuppyInput: CreatePuppyInput): Promise<Puppy> {
+  async create(
+    createPuppyInput: CreatePuppyInput,
+    waitingListId: number,
+  ): Promise<Puppy> {
     const puppy = this.puppyRepo.create({
       ...createPuppyInput,
     });
-    return this.puppyRepo.save(puppy);
+    const waitingListEntry = await this.waitingListEntryRepo.findOneBy({
+      id: waitingListId,
+    });
+    if (!waitingListEntry)
+      throw new NotFoundException('Waiting list not found');
+    await this.puppyRepo.save(puppy);
+    await this.waitingListEntryRepo.update({ id: waitingListId }, { puppy });
+    return puppy;
   }
 
   async findAll(): Promise<Puppy[]> {

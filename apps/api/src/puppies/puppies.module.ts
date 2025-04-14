@@ -9,5 +9,4 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [TypeOrmModule.forFeature([Puppy, WaitingListEntry])],
   providers: [PuppiesResolver, PuppiesService],
 })
-export class PuppiesModule { }
-
+export class PuppiesModule {}

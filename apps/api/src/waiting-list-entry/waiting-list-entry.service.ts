@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { WaitingListEntry } from './entities/waiting-list-entry.entity';
 import { CreateWaitingListEntryInput } from './dto/create-waiting-list-entry.input';
 import { WaitingList } from 'src/waiting-list/entities/waiting-list.entity';
+import { Puppy } from 'src/puppies/entities/puppy.entity';
 
 @Injectable()
 export class WaitingListEntryService {
@@ -12,6 +13,8 @@ export class WaitingListEntryService {
     private entriesRepo: Repository<WaitingListEntry>,
     @InjectRepository(WaitingList)
     private waitingListRepo: Repository<WaitingList>,
+    @InjectRepository(Puppy)
+    private puppyRepo: Repository<Puppy>,
   ) {}
 
   async findAll(): Promise<WaitingListEntry[]> {
@@ -54,6 +57,13 @@ export class WaitingListEntryService {
   ): Promise<WaitingListEntry> {
     const entry = await this.entriesRepo.findOneByOrFail({ id });
     entry.position = newPosition;
+    return this.entriesRepo.save(entry);
+  }
+
+  async addPuppy(id: number, puppyId: number): Promise<WaitingListEntry> {
+    const entry = await this.entriesRepo.findOneByOrFail({ id });
+    const puppy = await this.puppyRepo.findOneByOrFail({ id: puppyId });
+    entry.puppy = puppy;
     return this.entriesRepo.save(entry);
   }
 
