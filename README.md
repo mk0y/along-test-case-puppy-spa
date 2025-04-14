@@ -1,8 +1,12 @@
 # Puppy Spa
 
-Web app is deplyed to: https://along-test-case-puppy-spa-web.vercel.app/
+Puppy Spa app is a Turbo monorepo with Next.js frontend app in `apps/web` dir and Nest.js GraphQL API in `apps/api` dir.
 
-GraphQL API is deployed to: https://along-test-case-puppy-spa-web-1xkb.vercel.app/graphql
+Web app is deployed to (development version only): https://along-test-case-puppy-spa-web.vercel.app/
+
+GraphQL API is deployed to (development version only): https://along-test-case-puppy-spa-web-1xkb.vercel.app/graphql
+
+To build for production NODE_ENV should be set to "production".
 
 To run the app:
 
