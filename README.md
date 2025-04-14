@@ -1,5 +1,9 @@
 # Puppy Spa
 
+Web app is deplyed to: 
+
+GraphQL API is deployed to: https://along-test-case-puppy-spa-web-1xkb-h2f2z5sbr.vercel.app/graphql
+
 To run the app:
 
 1. Add to apps/web `.env.local` file with the following content:
@@ -34,6 +38,14 @@ pnpm dev
 ```
 
 6. Visit http://localhost:3000.
+
+### Chosen stack, besides required Next.js and Nest.js:
+
+1. Turbo monorepo Next.js with Nest.js as GraphQL API.
+2. Yoga GraphQL (https://the-guild.dev/graphql/yoga-server/docs/integrations/integration-with-nestjs)
+3. Neon DB (https://neon.tech/docs/introduction)
+4. Vercel for deplyment (Nest.js API is Vercel functions)
+5. TailwindCSS for styling
 
 Example of the app:
 
