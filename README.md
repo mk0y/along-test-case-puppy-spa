@@ -2,7 +2,7 @@
 
 Web app is deplyed to: https://along-test-case-puppy-spa-web.vercel.app/
 
-GraphQL API is deployed to: https://along-test-case-puppy-spa-web-1xkb-h2f2z5sbr.vercel.app/graphql
+GraphQL API is deployed to: https://along-test-case-puppy-spa-web-1xkb.vercel.app/graphql
 
 To run the app:
 
