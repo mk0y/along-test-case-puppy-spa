@@ -1,58 +1,40 @@
-# Turborepo Tailwind CSS starter
+# Puppy Spa
 
-This Turborepo starter is maintained by the Turborepo core team.
+To run the app:
 
-## Using this example
+1. Add to apps/web `.env.local` file with the following content:
 
-Run the following command:
-
-```sh
-npx create-turbo@latest -e with-tailwind
+```
+GRAPHQL_API_ENDPOINT=http://localhost:3001/graphql
 ```
 
-## What's inside?
+2. Add to apps/api `.env` file with the following content (example):
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app with [Tailwind CSS](https://tailwindcss.com/)
-- `web`: another [Next.js](https://nextjs.org/) app with [Tailwind CSS](https://tailwindcss.com/)
-- `ui`: a stub React component library with [Tailwind CSS](https://tailwindcss.com/) shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Building packages/ui
-
-This example is set up to produce compiled styles for `ui` components into the `dist` directory. The component `.tsx` files are consumed by the Next.js apps directly using `transpilePackages` in `next.config.ts`. This was chosen for several reasons:
-
-- Make sharing one `tailwind.config.ts` to apps and packages as easy as possible.
-- Make package compilation simple by only depending on the Next.js Compiler and `tailwindcss`.
-- Ensure Tailwind classes do not overwrite each other. The `ui` package uses a `ui-` prefix for it's classes.
-- Maintain clear package export boundaries.
-
-Another option is to consume `packages/ui` directly from source without building. If using this option, you will need to update the `tailwind.config.ts` in your apps to be aware of your package locations, so it can find all usages of the `tailwindcss` class names for CSS compilation.
-
-For example, in [tailwind.config.ts](packages/tailwind-config/tailwind.config.ts):
-
-```js
-  content: [
-    // app content
-    `src/**/*.{js,ts,jsx,tsx}`,
-    // include packages if not transpiling
-    "../../packages/ui/*.{js,ts,jsx,tsx}",
-  ],
+```
+DB_USER="puppy-spa_owner"
+DB_PASSWORD="npg_dZ6TiK8HsnCR"
+DB_HOST="xx-dark-snowflake-a86j77je-pooler.eu-central-1.aws.neon.tech"
+DB_NAME="puppy-spa..."
+DB_PORT="5432"
+NODE_ENV="development"
 ```
 
-If you choose this strategy, you can remove the `tailwindcss` and `autoprefixer` dependencies from the `ui` package.
+3. Go to root dir:
 
-### Utilities
+4. Install dependencies:
 
-This Turborepo has some additional tools already setup for you:
+```
+pnpm install
+```
 
-- [Tailwind CSS](https://tailwindcss.com/) for styles
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+5. Run dev:
+
+```
+pnpm dev
+```
+
+6. Visit http://localhost:3000.
+
+Example of the app:
+
+<img width="1670" alt="image" src="https://github.com/user-attachments/assets/f6a80c6a-5566-405e-96b5-1d93a2b5ddda" />
