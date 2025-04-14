@@ -51,6 +51,10 @@ pnpm dev
 4. Vercel for deplyment (Nest.js API is Vercel functions)
 5. TailwindCSS for styling
 
+Some obesrvations: for the MVP Nest.js might be overkill. But, everything should be evaluated before beginning. Monorepo is a good practice before going to microservice based architecture. It should slowly separate once the app becomes bigger, also better from developer experience POV.
+
+More complex setup and possible migration to e.g. AWS for custom load balancing and microservice orchestration, should be evaluated much later. MVP should first be built using serverless prodviders like Vercel, Koyeb, etc.
+
 Example of the app:
 
 <img width="1670" alt="image" src="https://github.com/user-attachments/assets/f6a80c6a-5566-405e-96b5-1d93a2b5ddda" />
