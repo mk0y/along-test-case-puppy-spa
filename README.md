@@ -1,6 +1,6 @@
 # Puppy Spa
 
-Web app is deplyed to: 
+Web app is deplyed to: https://along-test-case-puppy-spa-qc7tmj80f-marko-jakics-projects.vercel.app/
 
 GraphQL API is deployed to: https://along-test-case-puppy-spa-web-1xkb-h2f2z5sbr.vercel.app/graphql
 
